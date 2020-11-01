@@ -138,17 +138,19 @@ public class CimasDAO extends BaseDAO {
 
     public String getPicture(Cimas cima) {
         PreparedStatement sentencia = null;
-        String url = "";
+        String url;
 
         try {
             sentencia = conexion.prepareStatement(FOTO);
             sentencia.setString(1, cima.getNombre());
             ResultSet resultado = sentencia.executeQuery();
-                                                                //????????????
-            if(resultado.next()) {
-                url = resultado.getString(cima.getFoto());
-            }
 
+            while(resultado.next()) {
+                System.out.println();                       //?????????????
+                url = resultado.getString(1);    // SOLUCIONADO! En esta línea 150 estaba el problema
+                return  url;                                // Hay que poner el column index de los campos solicitados en la
+            }                                               // Consulta SELECT imagen FROM... <-- En este caso sól hay uno "imagen"
+                                                            // Por eso el índice es 1 (columnIndex 1 en línea 150)
         } catch (SQLException sqle) {
             sqle.printStackTrace();
 
@@ -162,8 +164,8 @@ public class CimasDAO extends BaseDAO {
                 }
             }
         }
-        return  url;
 
+        return null;
     }
 
 }

@@ -93,10 +93,12 @@ public class Cimas {
     }
 
     public String getFoto() {
+
         return foto;
     }
 
     public void setFoto(String foto) {
+
         this.foto = foto;
     }
 

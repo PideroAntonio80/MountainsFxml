@@ -15,6 +15,8 @@ import javafx.scene.image.ImageView;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -47,7 +49,11 @@ public class AppController implements Initializable {
         cbDificultad.setItems(combo);
 
         cargarLista();
-        cargarFoto();
+        /*try {
+            cargarFoto();
+        } catch (FileNotFoundException fnfe) {
+            fnfe.printStackTrace();
+        }*/
 
     }
 
@@ -113,13 +119,13 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    public void cargarFoto() {  // ?????????????????????
+    public void cargarFoto(TextField url) throws FileNotFoundException {  // ?????????????????????
         File file = new File(tvFoto.getText());
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(new FileInputStream(String.valueOf(url)));
         ivImagen.setImage(image);
     }
 
-    public void getDetalles(Event event) {
+    public void getDetalles(Event event) throws FileNotFoundException {
         tfNombre.setText(lvLista.getSelectionModel().selectedItemProperty().getValue().getNombre());
         tfAltitud.setText(lvLista.getSelectionModel().selectedItemProperty().getValue().getAltitud());
         tfValle.setText(lvLista.getSelectionModel().selectedItemProperty().getValue().getValle());
@@ -129,7 +135,9 @@ public class AppController implements Initializable {
         String nombre = tfNombre.getText();
         Cimas cima = new Cimas(nombre);
         tvFoto.setText(cimasDAO.getPicture(cima));
-
+        cargarFoto(tvFoto);
     }
 
 }
+
+// "C:\\Users\\shady\\Desktop\\monte-everest.png"
