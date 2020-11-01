@@ -1,4 +1,4 @@
-package com.sanvalero.mountainsFxml;
+package com.sanvalero.mountainsFxml.dao;
 
 import javax.swing.*;
 import java.sql.Connection;

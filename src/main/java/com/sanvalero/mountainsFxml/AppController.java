@@ -1,20 +1,16 @@
 package com.sanvalero.mountainsFxml;
 
-import com.sanvalero.mountainsFxml.model.Cimas;
+import com.sanvalero.mountainsFxml.dao.CimasDAO;
+import com.sanvalero.mountainsFxml.domain.Cimas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import javax.swing.*;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -37,10 +33,17 @@ public class AppController implements Initializable {
     public ListView<Cimas> lvLista;
     public Label lAlertas;
     public ImageView ivImagen;
+    //public MenuItem miQuit;
 
     public AppController() {
         cimasDAO = new CimasDAO();
         cimasDAO.conectar();
+    }
+
+    @FXML
+    public void desconectar() {
+        cimasDAO.desconectar();
+        lAlertas.setText("Base de datos desconectada");
     }
 
     @Override
@@ -49,12 +52,6 @@ public class AppController implements Initializable {
         cbDificultad.setItems(combo);
 
         cargarLista();
-        /*try {
-            cargarFoto();
-        } catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-        }*/
-
     }
 
     @FXML
@@ -65,21 +62,29 @@ public class AppController implements Initializable {
         tfTiempoAscenso.setText("");
         cbDificultad.setValue(null);
         tvFoto.setText("");
+        ivImagen.setImage(null);
         lAlertas.setText("");
     }
 
     @FXML
     public void guardarCima(Event event) {
         String nombre = tfNombre.getText();
-        String altitud = tfAltitud.getText();
-        String valle = tfValle.getText();
-        String tiempoAscenso = tfTiempoAscenso.getText();
-        String dificultad = cbDificultad.getSelectionModel().getSelectedItem();
-        String foto = tvFoto.getText();
+        if (nombre.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Campo Incompleto");
+            alert.setContentText("El campo nombre es obligatorio");
+            alert.show();
+        } else {
+            String altitud = tfAltitud.getText();
+            String valle = tfValle.getText();
+            String tiempoAscenso = tfTiempoAscenso.getText();
+            String dificultad = cbDificultad.getSelectionModel().getSelectedItem();
+            String foto = tvFoto.getText();
 
-        Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad, foto);
-        cimasDAO.guardarCima(cima);
-        lAlertas.setText("Registro guardado correctamente");
+            Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad, foto);
+            cimasDAO.guardarCima(cima);
+            lAlertas.setText("Registro guardado correctamente");
+        }
 
         cargarLista();
     }
@@ -87,21 +92,48 @@ public class AppController implements Initializable {
     @FXML
     public void modificarCima(Event event) {
         String nombre = tfNombre.getText();
-        String altitud = tfAltitud.getText();
-        String valle = tfValle.getText();
-        String tiempoAscenso = tfTiempoAscenso.getText();
-        String dificultad = cbDificultad.getSelectionModel().getSelectedItem();
+        if (nombre.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Campo Incompleto");
+            alert.setContentText("El campo nombre es obligatorio");
+            alert.show();
+        } else {
+            String altitud = tfAltitud.getText();
+            String valle = tfValle.getText();
+            String tiempoAscenso = tfTiempoAscenso.getText();
+            String dificultad = cbDificultad.getSelectionModel().getSelectedItem();
+            String foto = tvFoto.getText();
+            // TODO Que ponga Registro modificado (línea 112) después de aceptar el mensaje del Alert (líneas 105-108)
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Modificando Registro");
+            alert.setContentText("¿Estás seguro de que deseas modificarlo?");
+            alert.show();
 
-        Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad);
-        cimasDAO.modificarCima(cima);
-        lAlertas.setText("Registro modificado");
+            Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad, foto);
+            cimasDAO.modificarCima(cima);
+            lAlertas.setText("Registro modificado");
+
+            /*if (alert.getResult() == ButtonType.OK) {
+            Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad, foto);
+            cimasDAO.modificarCima(cima);
+            lAlertas.setText("Registro modificado");
+
+            cargarLista();
+        }*/
+        }
 
         cargarLista();
+
     }
 
     @FXML
     public void eliminarCima(Event event) {
         String nombre = tfNombre.getText();
+        // TODO Que ponga Registro eliminado (línea 129) después de aceptar el mensaje del Alert (líneas 121-124)
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Eliminando Registro");
+        alert.setContentText("¿Estás seguro de que deseas eliminarlo?");
+        alert.show();
 
         Cimas cima = new Cimas(nombre);
 
@@ -109,19 +141,17 @@ public class AppController implements Initializable {
         lAlertas.setText("Registro eliminado");
 
         cargarLista();
-
     }
 
     @FXML
     public void cargarLista() {
-        ObservableList<Cimas> list = FXCollections.observableArrayList(cimasDAO.listarCoches());
+        ObservableList<Cimas> list = FXCollections.observableArrayList(cimasDAO.listarCimas());
         lvLista.setItems(list);
     }
 
     @FXML
-    public void cargarFoto(TextField url) throws FileNotFoundException {  // ?????????????????????
-        File file = new File(tvFoto.getText());
-        Image image = new Image(new FileInputStream(String.valueOf(url)));
+    public void cargarFoto(String url) throws FileNotFoundException {
+        Image image = new Image(new FileInputStream(url));
         ivImagen.setImage(image);
     }
 
@@ -134,10 +164,20 @@ public class AppController implements Initializable {
 
         String nombre = tfNombre.getText();
         Cimas cima = new Cimas(nombre);
-        tvFoto.setText(cimasDAO.getPicture(cima));
-        cargarFoto(tvFoto);
+        if(cimasDAO.getPicture(cima) != null) {
+            tvFoto.setText(cimasDAO.getPicture(cima));
+            cargarFoto(tvFoto.getText());
+        }
+
     }
 
 }
 
-// "C:\\Users\\shady\\Desktop\\monte-everest.png"
+// TODO 1- Estilos en la ventana Scene Builder (Marcos a ImageView y quizás más componentes, igual foto de fondo desenfocada a anchorPane...)
+// TODO 2- Corregir error en cimas.fxml
+// TODO 3- Hacer los TODO de modificar y eliminar (definidos más arriba)
+// TODO 4- Aviso de que coche guardado ya existe
+// TODO 5- Hacer Dialog de conexión a BBDD y petición de User y Password
+// TODO 6- Rellenar la BBDD con registros con fotos chulas
+
+// C:\\Users\\shady\\Documents\\Proyectos_IntelliJ\\mountainsFxml\\src\\main\\resources\\images\\ibon_plan.JPG

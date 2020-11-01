@@ -1,6 +1,4 @@
-package com.sanvalero.mountainsFxml.model;
-
-import java.sql.Time;
+package com.sanvalero.mountainsFxml.domain;
 
 /**
  * Creado por @ author: Pedro Orós
@@ -104,6 +102,6 @@ public class Cimas {
 
     @Override
     public String toString() {
-        return this.nombre + " (" + this.altitud + ") ---> " + this.valle + ".  Tiempo de Ascenso: " + this.tiempoAscenso + ".  Dificultad: " + this.dificultad;
+        return this.nombre + " (" + this.altitud + " mts.) ---> " + this.valle + ".  Tiempo de Ascenso: " + this.tiempoAscenso + ".  Dificultad: " + this.dificultad;
     }
 }

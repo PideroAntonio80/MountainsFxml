@@ -55,7 +55,7 @@
         </Menu>
       </menus>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="518.0" prefWidth="789.0" style="-fx-background-color: lightgreen;" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="518.0" prefWidth="789.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS">
       <children>
         <Label alignment="CENTER" layoutX="210.0" layoutY="257.0" style="&#10;" text="Drag components from Library here…" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
           <font>
@@ -68,7 +68,7 @@
                   <Font name="Adventure Normal" size="18.0" />
                </font>
             </Label>
-            <ListView fx:id="lvLista" layoutX="298.0" layoutY="307.0" prefHeight="146.0" prefWidth="415.0" />
+            <ListView fx:id="lvLista" layoutX="298.0" layoutY="307.0" prefHeight="146.0" onMouseClicked="#getDetalles" prefWidth="415.0" />
             <Label layoutX="27.0" layoutY="184.0" text="Altitud">
                <font>
                   <Font name="Adventure Normal" size="18.0" />
