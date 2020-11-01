@@ -58,6 +58,7 @@ public class AppController implements Initializable {
         tfValle.setText("");
         tfTiempoAscenso.setText("");
         cbDificultad.setValue(null);
+        tvFoto.setText("");
         lAlertas.setText("");
     }
 
@@ -112,7 +113,7 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    public void cargarFoto() {
+    public void cargarFoto() {  // ?????????????????????
         File file = new File(tvFoto.getText());
         Image image = new Image(file.toURI().toString());
         ivImagen.setImage(image);
@@ -124,6 +125,11 @@ public class AppController implements Initializable {
         tfValle.setText(lvLista.getSelectionModel().selectedItemProperty().getValue().getValle());
         tfTiempoAscenso.setText(lvLista.getSelectionModel().selectedItemProperty().getValue().getTiempoAscenso());
         cbDificultad.setValue(lvLista.getSelectionModel().selectedItemProperty().getValue().getDificultad());
+
+        String nombre = tfNombre.getText();
+        Cimas cima = new Cimas(nombre);
+        tvFoto.setText(cimasDAO.getPicture(cima));
+
     }
 
 }

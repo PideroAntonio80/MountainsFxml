@@ -33,7 +33,13 @@ public class Cimas {
     }
 
     public Cimas(String nombre) {
+
         this.nombre = nombre;
+    }
+
+    public Cimas(String nombre, String foto) {
+        this.nombre = nombre;
+        this.foto = foto;
     }
 
     public String getNombre() {

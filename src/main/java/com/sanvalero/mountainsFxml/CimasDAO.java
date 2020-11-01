@@ -20,6 +20,7 @@ public class CimasDAO extends BaseDAO {
     private final String MODIFICAR = "UPDATE cimas SET nombre = ?, altitud = ?, valle = ?, tiempoAscenso = ?, dificultad = ? WHERE nombre = ?";
     private final String ELIMINAR = "DELETE FROM cimas WHERE nombre = ?";
     private final String LISTAR = "SELECT * FROM cimas";
+    private final String FOTO = "SELECT imagen FROM cimas WHERE nombre = ?";
 
     public void guardarCima(Cimas cima) {
         PreparedStatement sentencia = null;
@@ -133,6 +134,36 @@ public class CimasDAO extends BaseDAO {
             }
         }
         return  lista;
+    }
+
+    public String getPicture(Cimas cima) {
+        PreparedStatement sentencia = null;
+        String url = "";
+
+        try {
+            sentencia = conexion.prepareStatement(FOTO);
+            sentencia.setString(1, cima.getNombre());
+            ResultSet resultado = sentencia.executeQuery();
+                                                                //????????????
+            if(resultado.next()) {
+                url = resultado.getString(cima.getFoto());
+            }
+
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+
+        }
+        finally {
+            if(sentencia != null) {
+                try {
+                    sentencia.close();
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            }
+        }
+        return  url;
+
     }
 
 }
