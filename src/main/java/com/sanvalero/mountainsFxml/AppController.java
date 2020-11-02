@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -103,23 +104,19 @@ public class AppController implements Initializable {
             String tiempoAscenso = tfTiempoAscenso.getText();
             String dificultad = cbDificultad.getSelectionModel().getSelectedItem();
             String foto = tvFoto.getText();
-            // TODO Que ponga Registro modificado (línea 112) después de aceptar el mensaje del Alert (líneas 105-108)
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText(null);
             alert.setTitle("Modificando Registro");
             alert.setContentText("¿Estás seguro de que deseas modificarlo?");
-            alert.show();
+            Optional<ButtonType> action = alert.showAndWait();
 
-            Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad, foto);
-            cimasDAO.modificarCima(cima);
-            lAlertas.setText("Registro modificado");
+            if (action.get() == ButtonType.OK) {
+                Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad, foto);
+                cimasDAO.modificarCima(cima);
+                lAlertas.setText("Registro modificado");
+            }
 
-            /*if (alert.getResult() == ButtonType.OK) {
-            Cimas cima = new Cimas(nombre, altitud, valle, tiempoAscenso, dificultad, foto);
-            cimasDAO.modificarCima(cima);
-            lAlertas.setText("Registro modificado");
-
-            cargarLista();
-        }*/
         }
 
         cargarLista();
@@ -129,18 +126,19 @@ public class AppController implements Initializable {
     @FXML
     public void eliminarCima(Event event) {
         String nombre = tfNombre.getText();
-        // TODO Que ponga Registro eliminado (línea 129) después de aceptar el mensaje del Alert (líneas 121-124)
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Eliminando Registro");
         alert.setContentText("¿Estás seguro de que deseas eliminarlo?");
-        alert.show();
+        Optional<ButtonType> action = alert.showAndWait();
 
-        Cimas cima = new Cimas(nombre);
+        if (action.get() == ButtonType.OK) {
+            Cimas cima = new Cimas(nombre);
+            cimasDAO.eliminarCima(cima);
+            lAlertas.setText("Registro eliminado");
+        }
 
-        cimasDAO.eliminarCima(cima);
-        lAlertas.setText("Registro eliminado");
-
-        cargarLista();
+         cargarLista();
     }
 
     @FXML
@@ -175,9 +173,8 @@ public class AppController implements Initializable {
 
 // TODO 1- Estilos en la ventana Scene Builder (Marcos a ImageView y quizás más componentes, igual foto de fondo desenfocada a anchorPane...)
 // TODO 2- Corregir error en cimas.fxml
-// TODO 3- Hacer los TODO de modificar y eliminar (definidos más arriba)
-// TODO 4- Aviso de que coche guardado ya existe
-// TODO 5- Hacer Dialog de conexión a BBDD y petición de User y Password
-// TODO 6- Rellenar la BBDD con registros con fotos chulas
+// TODO 3- Aviso de que coche guardado ya existe
+// TODO 4- Hacer Dialog de conexión a BBDD y petición de User y Password
 
-// C:\\Users\\shady\\Documents\\Proyectos_IntelliJ\\mountainsFxml\\src\\main\\resources\\images\\ibon_plan.JPG
+
+// C:\\Users\\shady\\Documents\\Proyectos_IntelliJ\\mountainsFxml\\src\\main\\resources\\images\\fondo_app.jpg
