@@ -60,7 +60,7 @@ public class CimasDAO extends BaseDAO {
             sentencia.setString(4, cima.getTiempoAscenso());
             sentencia.setString(5, cima.getDificultad());
             sentencia.setString(6, cima.getFoto());
-            sentencia.setString(7,JOptionPane.showInputDialog("Introduce el nombre de la cima que desea modificar"));
+            sentencia.setString(7, cima.getNombre());
 
             sentencia.executeUpdate();
 
