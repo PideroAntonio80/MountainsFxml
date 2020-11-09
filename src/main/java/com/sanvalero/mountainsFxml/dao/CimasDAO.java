@@ -21,6 +21,10 @@ public class CimasDAO extends BaseDAO {
     private final String LISTAR = "SELECT * FROM cimas";
     private final String FOTO = "SELECT imagen FROM cimas WHERE nombre = ?";
 
+    public CimasDAO(String USUARIO, String PASSWORD, int eligeMotor) {
+        super(USUARIO, PASSWORD, eligeMotor);
+    }
+
     public void guardarCima(Cimas cima) {
         PreparedStatement sentencia = null;
         try {

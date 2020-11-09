@@ -12,11 +12,18 @@ import java.sql.SQLException;
 public class BaseDAO {
 
     protected Connection conexion;
-    private final String USUARIO = "root";
-    private final String PASSWORD = "";
+    protected String USUARIO;
+    protected String PASSWORD;
+    protected int eligeMotor;
+
+    public BaseDAO(String USUARIO, String PASSWORD, int eligeMotor) {
+
+        this.USUARIO = USUARIO;
+        this.PASSWORD = PASSWORD;
+        this.eligeMotor = eligeMotor;
+    }
 
     public Connection conectar() {
-        int eligeMotor = Integer.parseInt(JOptionPane.showInputDialog("Elige motor de BBDD: (1)MySQL, (2)Postgre"));
 
         if(eligeMotor == 1) {
             try {
@@ -24,10 +31,8 @@ public class BaseDAO {
                                                         copio el xml de mysql connector y lo pego en el POM*/
                 conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/mountains?serverTimezone=UTC",
                         USUARIO, PASSWORD);
-            } catch (ClassNotFoundException cnfe) {
+            } catch (ClassNotFoundException | SQLException cnfe) {
                 cnfe.printStackTrace();
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
             }
             return conexion;
 

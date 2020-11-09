@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="485.0" prefWidth="727.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="597.0" prefWidth="749.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar prefHeight="19.0" prefWidth="627.0" VBox.vgrow="NEVER">
       <menus>
@@ -64,15 +64,15 @@
             </ContextMenu>
          </contextMenu>
     </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="536.0" prefWidth="727.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="572.0" prefWidth="838.0" style="-fx-background-color: lightblue;" VBox.vgrow="ALWAYS">
       <children>
-            <ImageView fx:id="ivImagen" fitHeight="265.0" fitWidth="423.0" layoutX="298.0" layoutY="13.0" preserveRatio="true" AnchorPane.topAnchor="13.0" />
+            <ImageView fx:id="ivImagen" fitHeight="265.0" fitWidth="436.0" layoutX="289.0" layoutY="10.0" preserveRatio="true" AnchorPane.topAnchor="10.0" />
             <Label layoutX="27.0" layoutY="121.0" text="Nombre">
                <font>
                   <Font name="Adventure Normal" size="18.0" />
                </font>
             </Label>
-            <ListView fx:id="lvLista" layoutX="298.0" layoutY="314.0" onMouseClicked="#getDetalles" prefHeight="143.0" prefWidth="415.0" />
+            <ListView fx:id="lvLista" layoutX="298.0" layoutY="314.0" onMouseClicked="#getDetalles" prefHeight="234.0" prefWidth="436.0" />
             <Label layoutX="28.0" layoutY="163.0" text="Altitud">
                <font>
                   <Font name="Adventure Normal" size="18.0" />
@@ -129,7 +129,7 @@
                   <Font name="Adventure Normal" size="15.0" />
                </font>
             </Label>
-            <TextField fx:id="tvFoto" layoutX="369.0" layoutY="283.0" prefHeight="25.0" prefWidth="344.0" />
+            <TextField fx:id="tvFoto" layoutX="369.0" layoutY="283.0" prefHeight="25.0" prefWidth="365.0" />
       </children>
          <effect>
             <ColorAdjust />

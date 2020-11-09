@@ -3,8 +3,10 @@ package com.sanvalero.mountainsFxml;
 import com.sanvalero.mountainsFxml.util.R;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -19,7 +21,8 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage primaryStage) throws Exception {
+
         FXMLLoader loader = new FXMLLoader();
         //loader.setLocation(ClassLoader.getSystemResource("cimas.fxml"));
         loader.setLocation(R.getUI("montes.fxml"));
@@ -27,8 +30,9 @@ public class App extends Application {
         VBox vbox = loader.load();
 
         Scene scene = new Scene(vbox);
-        stage.setScene(scene);
-        stage.show();
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
     }
 
     @Override

@@ -2,17 +2,24 @@ package com.sanvalero.mountainsFxml;
 
 import com.sanvalero.mountainsFxml.dao.CimasDAO;
 import com.sanvalero.mountainsFxml.domain.Cimas;
+import com.sanvalero.mountainsFxml.util.R;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -34,10 +41,25 @@ public class AppController implements Initializable {
     public ListView<Cimas> lvLista;
     public Label lAlertas;
     public ImageView ivImagen;
-    //public MenuItem miQuit;
 
     public AppController() {
-        cimasDAO = new CimasDAO();
+
+        /*try {
+        Stage secondStage = new Stage();
+        FXMLLoader loader2 = new FXMLLoader();
+        loader2.setLocation(R.getUI("inicio_mountains.fxml"));
+        loader2.setController(new InitController());
+        VBox inicio = loader2.load();
+        Scene scene2 = new Scene(inicio);
+        secondStage.setScene(scene2);
+        secondStage.initModality(Modality.APPLICATION_MODAL);
+        secondStage.showAndWait();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        cimasDAO = new CimasDAO("root", "", 1);
         cimasDAO.conectar();
     }
 
@@ -173,7 +195,7 @@ public class AppController implements Initializable {
 
 // TODO 1- Estilos en la ventana Scene Builder (Marcos a ImageView y quizás más componentes, igual foto de fondo desenfocada a anchorPane...)
 // TODO 2- Corregir error en cimas.fxml
-// TODO 3- Aviso de que coche guardado ya existe
+// TODO 3- Aviso de que cima guardada ya existe
 // TODO 4- Hacer Dialog de conexión a BBDD y petición de User y Password
 
 
