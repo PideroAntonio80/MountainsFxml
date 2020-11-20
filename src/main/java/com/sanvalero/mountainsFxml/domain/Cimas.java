@@ -12,8 +12,19 @@ public class Cimas {
     private String tiempoAscenso;
     private String dificultad;
     private String foto;
+    private String nombreViejo;
 
     public Cimas(String nombre, String altitud, String valle, String tiempoAscenso, String dificultad, String foto) {
+        this.nombre = nombre;
+        this.altitud = altitud;
+        this.valle = valle;
+        this.tiempoAscenso = tiempoAscenso;
+        this.dificultad = dificultad;
+        this.foto = foto;
+    }
+
+    public Cimas(String nombreViejo, String nombre, String altitud, String valle, String tiempoAscenso, String dificultad, String foto) {
+        this.nombreViejo = nombreViejo;
         this.nombre = nombre;
         this.altitud = altitud;
         this.valle = valle;
@@ -100,8 +111,17 @@ public class Cimas {
         this.foto = foto;
     }
 
+    public String getNombreViejo() {
+        return nombreViejo;
+    }
+
+    public void setNombreViejo(String nombreViejo) {
+        this.nombreViejo = nombreViejo;
+    }
+
     @Override
     public String toString() {
         return this.nombre + " (" + this.altitud + " mts.) ---> " + this.valle + ".  Tiempo de Ascenso: " + this.tiempoAscenso + ".  Dificultad: " + this.dificultad;
     }
+
 }

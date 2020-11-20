@@ -1,9 +1,12 @@
 package com.sanvalero.mountainsFxml.dao;
 
-import javax.swing.*;
+import com.sanvalero.mountainsFxml.util.R;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
  * Creado por @ author: Pedro Orós
@@ -12,57 +15,26 @@ import java.sql.SQLException;
 public class BaseDAO {
 
     protected Connection conexion;
-    protected String USUARIO;
-    protected String PASSWORD;
-    protected int eligeMotor;
 
-    public BaseDAO(String USUARIO, String PASSWORD, int eligeMotor) {
+    public void conectar() throws ClassNotFoundException, SQLException, IOException {
 
-        this.USUARIO = USUARIO;
-        this.PASSWORD = PASSWORD;
-        this.eligeMotor = eligeMotor;
-    }
+        Properties configuration = new Properties();
+        configuration.load(R.getProperties("database.properties"));
+        String host = configuration.getProperty("host");
+        String port = configuration.getProperty("port");
+        String name = configuration.getProperty("name");
+        String username = configuration.getProperty("username");
+        String password = configuration.getProperty("password");
 
-    public Connection conectar() {
-
-        if(eligeMotor == 1) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver"); /* <--- Busco en MVNrepository (en internet),
+        Class.forName("com.mysql.cj.jdbc.Driver"); /* <--- Busco en MVNrepository (en internet),
                                                         copio el xml de mysql connector y lo pego en el POM*/
-                conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/mountains?serverTimezone=UTC",
-                        USUARIO, PASSWORD);
-            } catch (ClassNotFoundException | SQLException cnfe) {
-                cnfe.printStackTrace();
-            }
-            return conexion;
-
-        } /*else {
-            try {
-                Class.forName("org.postgresql.Driver").newInstance();
-                conexion = DriverManager.getConnection(
-                        "jdbc:postgresql://localhost:5432/basededatos",
-                        "usuario", "contraseña");
-            } catch (ClassNotFoundException cnfe) {
-                cnfe.prinStackTrace();
-            } catch (SQLException sqle) {
-                sqle.prinStackTrace();
-            } catch (InstantiationException ie) {
-                ie.prinStackTrace();
-            } catch (IllegalAccessException iae) {
-                iae.prinStackTrace();
-            }
-        }*/
-        return null;
+        conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + name + "?serverTimezone=UTC",
+                username, password);
     }
 
-    public void desconectar() {
-        try {
+    public void desconectar() throws SQLException {
             conexion.close();
             conexion = null;
-
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
     }
 
 }

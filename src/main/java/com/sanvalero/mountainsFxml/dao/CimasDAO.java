@@ -15,20 +15,11 @@ import java.util.List;
  */
 public class CimasDAO extends BaseDAO {
 
-    private final String GUARDAR = "INSERT INTO cimas (nombre, altitud, valle, tiempoAscenso, dificultad, imagen) VALUES (?, ?, ?, ?, ?, ?)";
-    private final String MODIFICAR = "UPDATE cimas SET nombre = ?, altitud = ?, valle = ?, tiempoAscenso = ?, dificultad = ?, imagen = ? WHERE nombre = ?";
-    private final String ELIMINAR = "DELETE FROM cimas WHERE nombre = ?";
-    private final String LISTAR = "SELECT * FROM cimas";
-    private final String FOTO = "SELECT imagen FROM cimas WHERE nombre = ?";
-
-    public CimasDAO(String USUARIO, String PASSWORD, int eligeMotor) {
-        super(USUARIO, PASSWORD, eligeMotor);
-    }
-
-    public void guardarCima(Cimas cima) {
+    public void guardarCima(Cimas cima) throws SQLException {
+        String sql = "INSERT INTO cimas (nombre, altitud, valle, tiempoAscenso, dificultad, imagen) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement sentencia = null;
-        try {
-            sentencia = conexion.prepareStatement(GUARDAR);
+
+            sentencia = conexion.prepareStatement(sql);
 
             sentencia.setString(1, cima.getNombre());
             sentencia.setString(2,cima.getAltitud());
@@ -39,24 +30,13 @@ public class CimasDAO extends BaseDAO {
 
             sentencia.executeUpdate();
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        finally {
-            if(sentencia != null) {
-                try {
-                    sentencia.close();
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-            }
-        }
     }
 
-    public void modificarCima(Cimas cima) {
+    public void modificarCima(Cimas cima) throws SQLException {
+        String sql = "UPDATE cimas SET nombre = ?, altitud = ?, valle = ?, tiempoAscenso = ?, dificultad = ?, imagen = ? WHERE nombre = ?";
         PreparedStatement sentencia = null;
-        try {
-            sentencia = conexion.prepareStatement(MODIFICAR);
+
+            sentencia = conexion.prepareStatement(sql);
 
             sentencia.setString(1, cima.getNombre());
             sentencia.setString(2, cima.getAltitud());
@@ -64,53 +44,31 @@ public class CimasDAO extends BaseDAO {
             sentencia.setString(4, cima.getTiempoAscenso());
             sentencia.setString(5, cima.getDificultad());
             sentencia.setString(6, cima.getFoto());
-            sentencia.setString(7, cima.getNombre());
+            sentencia.setString(7, cima.getNombreViejo());
 
             sentencia.executeUpdate();
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        finally {
-            if(sentencia != null) {
-                try {
-                    sentencia.close();
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-            }
-        }
     }
 
-    public void eliminarCima(Cimas cima) {
+    public void eliminarCima(Cimas cima) throws SQLException {
+        String sql = "DELETE FROM cimas WHERE nombre = ?";
         PreparedStatement sentencia = null;
-        try {
-            sentencia = conexion.prepareStatement(ELIMINAR);
+
+            sentencia = conexion.prepareStatement(sql);
 
             sentencia.setString(1, cima.getNombre());
 
             sentencia.executeUpdate();
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        finally {
-            if(sentencia != null) {
-                try {
-                    sentencia.close();
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-            }
-        }
     }
 
-    public List<Cimas> listarCimas() {
+    public List<Cimas> listarCimas() throws SQLException {
+        String sql = "SELECT * FROM cimas";
         PreparedStatement sentencia = null;
+
         List<Cimas> lista = new ArrayList<>();
 
-        try {
-            sentencia = conexion.prepareStatement(LISTAR);
+            sentencia = conexion.prepareStatement(sql);
             ResultSet resultado = sentencia.executeQuery();
 
             while (resultado.next()) {
@@ -125,51 +83,33 @@ public class CimasDAO extends BaseDAO {
 
             }
 
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        finally {
-            if(sentencia != null) {
-                try {
-                    sentencia.close();
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-            }
-        }
         return  lista;
     }
-
-    public String getPicture(Cimas cima) {
+    public String getPicture(Cimas cima) throws SQLException {
+        String sql = "SELECT imagen FROM cimas WHERE nombre = ?";
         PreparedStatement sentencia = null;
         String url;
 
-        try {
-            sentencia = conexion.prepareStatement(FOTO);
-            sentencia.setString(1, cima.getNombre());
-            ResultSet resultado = sentencia.executeQuery();
+        sentencia = conexion.prepareStatement(sql);
+        sentencia.setString(1, cima.getNombre());
+        ResultSet resultado = sentencia.executeQuery();
 
-            while(resultado.next()) {
+        if(resultado.next()) {
                                                             //?????????????
-                url = resultado.getString(1);    // SOLUCIONADO! En esta línea 150 estaba el problema
-                return  url;                                // Hay que poner el column index de los campos solicitados en la
-            }                                               // Consulta SELECT imagen FROM... <-- En este caso sólo hay uno: "imagen"
-                                                            // Por eso el índice es 1 (columnIndex 1 en línea 150)
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-
-        }
-        finally {
-            if(sentencia != null) {
-                try {
-                    sentencia.close();
-                } catch (SQLException sqle) {
-                    sqle.printStackTrace();
-                }
-            }
-        }
-
+            url = resultado.getString(1);    // SOLUCIONADO! En esta línea 99 estaba el problema
+            return  url;                                // Hay que poner el column index de los campos solicitados en la
+        }                                               // Consulta SELECT imagen FROM... <-- En este caso sólo hay uno: "imagen"
+                                                            // Por eso el índice es 1 (columnIndex 1 en línea 99)
         return null;
+    }
+
+    public boolean existeCoche(String nombre) throws SQLException {
+        String sql = "SELECT * FROM cimas WHERE nombre = ?";
+        PreparedStatement sentencia = conexion.prepareStatement(sql);
+        sentencia.setString(1, nombre);
+        ResultSet resultado = sentencia.executeQuery();
+
+        return resultado.next();
     }
 
 }
